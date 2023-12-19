@@ -5,9 +5,16 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
+    public bool FindElf;
+    public bool FindPart;
+
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private Transform target;
 
+    private void Start()
+    {
+        target = GameController.FindClosest(transform.position, FindElf, false, FindPart).transform;
+    }
 
     // Update is called once per frame
     void Update()
@@ -20,6 +27,6 @@ public class EnemyAI : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        print("collided with " + collision.gameObject.name);
+        
     }
 }
