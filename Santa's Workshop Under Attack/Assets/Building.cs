@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Building : MonoBehaviour
 {
     [SerializeField] private Generation gen;
     [SerializeField] private LayerMask buildingLayer;
+    [SerializeField] private UnityEvent<Vector3> onPlace;
     private Camera cam;
 
     private void Awake()
@@ -34,6 +36,7 @@ public class Building : MonoBehaviour
                 {
                     if (gen.IsOutOfBounds(rPos.x, rPos.y, rPos.z)) break;
                     gen.vox[rPos.x][rPos.y][rPos.z] = true;
+                    onPlace.Invoke(hit.point);
                     break;
                 }
                 point += dir;
