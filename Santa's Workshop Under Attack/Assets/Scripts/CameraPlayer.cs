@@ -27,19 +27,21 @@ public class CameraPlayer : MonoBehaviour
         float up = Input.GetAxis("Up");
         float speedMultiplier = 1f;
         if (Input.GetKey(KeyCode.LeftControl)) speedMultiplier = 2f;
-        print(speedMultiplier);
+
+        // Moving
+        Transform childTransform = transform.GetChild(0);
+        Vector2 forwardXZ = new Vector2(childTransform.forward.x, childTransform.forward.z).normalized;
+        Vector3 forward = new Vector3(forwardXZ.x, 0, forwardXZ.y);
+        Vector2 rightXZ = new Vector2(childTransform.right.x, childTransform.right.z).normalized;
+        Vector3 right = new Vector3(rightXZ.x, 0, rightXZ.y);
+        rb.velocity = (forward * vertical + right * horizontal + Vector3.up * up) * Speed * speedMultiplier;
 
         // Rotation
         rotationY += Input.GetAxis("Mouse X") * Sensitivity;
         rotationX += Input.GetAxis("Mouse Y") * Sensitivity;
         rotationX = Mathf.Clamp(rotationX, -89f, 89f);
-        transform.localEulerAngles = new Vector3(-rotationX, rotationY, 0);
+        transform.GetChild(0).localEulerAngles = new Vector3(-rotationX, rotationY, 0);
 
-        // Moving
-        Vector2 forwardXZ = new Vector2(transform.forward.x, transform.forward.z).normalized;
-        Vector3 forward = new Vector3(forwardXZ.x, 0, forwardXZ.y);
-        Vector2 rightXZ = new Vector2(transform.right.x, transform.right.z).normalized;
-        Vector3 right = new Vector3(rightXZ.x, 0, rightXZ.y);
-        rb.velocity = (forward * vertical + right * horizontal + Vector3.up * up) * Speed * speedMultiplier;
+        
     }
 }

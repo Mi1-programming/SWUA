@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour
     public List<GameObject> CastleParts = new();
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         Instance = this;
     }
