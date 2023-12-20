@@ -144,14 +144,17 @@ public class Generation : MonoBehaviour
         mesh.triangles = triangles.ToArray();
         mesh.uv = uvs.ToArray();
 
-        Mesh welded = SubdivisionSurface.Weld(mesh, float.Epsilon, mesh.bounds.size.x);
-        Mesh newMesh = SubdivisionSurface.Subdivide(
-            welded,
-            1,
-            false
-        );
+        if (mesh.vertexCount > 0)
+        {
+            Mesh welded = SubdivisionSurface.Weld(mesh, float.Epsilon, mesh.bounds.size.x);
+            mesh = SubdivisionSurface.Subdivide(
+                welded,
+                1,
+                false
+            );
+        }
 
-        newMesh.RecalculateNormals();
-        meshFilter.mesh = newMesh;
+        mesh.RecalculateNormals();
+        meshFilter.mesh = mesh;
     }
 }
