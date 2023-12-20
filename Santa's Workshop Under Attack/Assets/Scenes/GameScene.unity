@@ -1937,7 +1937,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115075533}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -49.9, y: 3.26, z: -17.15}
+  m_LocalPosition: {x: -28, y: 3.26, z: -17.15}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1958,7 +1958,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 14
   m_CollisionDetection: 1
 --- !u!114 &1115075541
 MonoBehaviour:
@@ -1991,7 +1991,7 @@ MonoBehaviour:
   FindElf: 1
   FindEnemy: 0
   FindPart: 1
-  Damage: 25
+  Damage: 10
   WeaponSpeed: 1
   WeaponRange: 1
   target: {fileID: 0}
@@ -2744,6 +2744,19 @@ MonoBehaviour:
   CastleParts:
   - {fileID: 91563147}
   - {fileID: 1651396695}
+  SpawnAreas:
+  - SpawnObject: {fileID: 1115075533}
+    SpawnAmount: 85
+    isElf: 0
+    isEnemy: 1
+    Pos1: {x: 60, y: 3.26, z: -40}
+    Pos2: {x: 0, y: 3.26, z: -80}
+  - SpawnObject: {fileID: 1777548230}
+    SpawnAmount: 60
+    isElf: 1
+    isEnemy: 0
+    Pos1: {x: 0, y: 3.26, z: -50}
+    Pos2: {x: -60, y: 3.26, z: -80}
 --- !u!4 &1710661648
 Transform:
   m_ObjectHideFlags: 0
@@ -2951,7 +2964,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1777548230}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -27.1, y: 2, z: -25.5}
+  m_LocalPosition: {x: -27.1, y: 2, z: -21.9}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2972,7 +2985,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 14
   m_CollisionDetection: 1
 --- !u!195 &1777548236
 NavMeshAgent:

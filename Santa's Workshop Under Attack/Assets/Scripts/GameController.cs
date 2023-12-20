@@ -13,13 +13,31 @@ public class GameController : MonoBehaviour
     public List<GameObject> Enemies = new();
     public List<GameObject> CastleParts = new();
 
-
+    public List<SpawnAreaData> SpawnAreas = new();
 
     void Awake()
     {
         Instance = this;
+        SpawnObjects();
     }
 
+    void SpawnObjects()
+    {
+        foreach (SpawnAreaData area in SpawnAreas)
+        {
+            for (int i = 0; i < area.SpawnAmount; i++)
+            {
+                // SpawnPos somehow doesn't work... they spawn to the not instantiated object's position
+                GameObject obj = Instantiate(area.SpawnObject);
+                obj.transform.position = new Vector3(Random.Range(area.Pos1.x, area.Pos2.x), area.Pos1.y, Random.Range(area.Pos1.z, area.Pos2.z));
+                
+                if (area.isElf) Elfs.Add(obj);
+                else if (area.isEnemy) Enemies.Add(obj);
+            }
+        }
+    }
+
+    #region Static Functions
     public static Transform FindClosest(Vector3 pos, bool findElf, bool findEnemy, bool findPart)
     {
         GameObject closest = null;
@@ -86,4 +104,5 @@ public class GameController : MonoBehaviour
         float targetDis = Mathf.Min(target.localScale.x, target.localScale.z) * 0.5f;
         return yourDis + targetDis;
     }
+    #endregion
 }
