@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 91563151}
   - component: {fileID: 91563150}
   - component: {fileID: 91563149}
+  - component: {fileID: 91563152}
   m_Layer: 0
   m_Name: Cylinder (2)
   m_TagString: Untagged
@@ -221,6 +222,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 91563147}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &91563152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91563147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e28db6c661cd184daf7362422b77bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 200
+  BreakWhenDead: 1
+  isElf: 0
+  isEnemy: 0
 --- !u!1 &219438888
 GameObject:
   m_ObjectHideFlags: 0
@@ -1814,7 +1831,8 @@ GameObject:
   - component: {fileID: 1115075539}
   - component: {fileID: 1115075538}
   - component: {fileID: 1115075537}
-  - component: {fileID: 1115075536}
+  - component: {fileID: 1115075542}
+  - component: {fileID: 1115075541}
   - component: {fileID: 1115075534}
   - component: {fileID: 1115075535}
   - component: {fileID: 1115075540}
@@ -1861,22 +1879,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1115075536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1115075533}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a4bdb41b5cf9ef438b342190fcd051b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FindElf: 1
-  FindPart: 1
-  agent: {fileID: 1115075534}
-  target: {fileID: 0}
 --- !u!23 &1115075537
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1958,6 +1960,41 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &1115075541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115075533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e28db6c661cd184daf7362422b77bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 100
+  BreakWhenDead: 0
+  isElf: 0
+  isEnemy: 1
+--- !u!114 &1115075542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1115075533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac3b1bd6c1196346ac00c04f567247c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FindElf: 1
+  FindEnemy: 0
+  FindPart: 1
+  Damage: 25
+  WeaponSpeed: 1
+  WeaponRange: 1
+  target: {fileID: 0}
 --- !u!1 &1201677544
 GameObject:
   m_ObjectHideFlags: 0
@@ -2621,6 +2658,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1651396696}
+  - component: {fileID: 1651396697}
   m_Layer: 0
   m_Name: Main Building
   m_TagString: Untagged
@@ -2654,6 +2692,22 @@ Transform:
   m_Father: {fileID: 2142000451}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1651396697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1651396695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e28db6c661cd184daf7362422b77bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 100
+  BreakWhenDead: 1
+  isElf: 0
+  isEnemy: 0
 --- !u!1 &1710661646
 GameObject:
   m_ObjectHideFlags: 0
@@ -2689,6 +2743,7 @@ MonoBehaviour:
   - {fileID: 1115075533}
   CastleParts:
   - {fileID: 91563147}
+  - {fileID: 1651396695}
 --- !u!4 &1710661648
 Transform:
   m_ObjectHideFlags: 0
@@ -2812,6 +2867,9 @@ GameObject:
   - component: {fileID: 1777548234}
   - component: {fileID: 1777548233}
   - component: {fileID: 1777548232}
+  - component: {fileID: 1777548239}
+  - component: {fileID: 1777548238}
+  - component: {fileID: 1777548236}
   - component: {fileID: 1777548231}
   - component: {fileID: 1777548235}
   m_Layer: 0
@@ -2911,11 +2969,68 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
+--- !u!195 &1777548236
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777548230}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 5
+  m_Acceleration: 30
+  avoidancePriority: 50
+  m_AngularSpeed: 180
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1777548238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777548230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e28db6c661cd184daf7362422b77bf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 100
+  BreakWhenDead: 0
+  isElf: 1
+  isEnemy: 0
+--- !u!114 &1777548239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1777548230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac3b1bd6c1196346ac00c04f567247c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FindElf: 0
+  FindEnemy: 1
+  FindPart: 0
+  Damage: 20
+  WeaponSpeed: 1
+  WeaponRange: 1
+  target: {fileID: 0}
 --- !u!1 &1806710105
 GameObject:
   m_ObjectHideFlags: 0
