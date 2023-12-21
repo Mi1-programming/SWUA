@@ -13,7 +13,6 @@ Shader "Unlit/Grid"
     {
         Tags { "RenderType"="Transparent" }
         Blend SrcAlpha OneMinusSrcAlpha
-        ZWrite Off
         LOD 100
 
         Pass

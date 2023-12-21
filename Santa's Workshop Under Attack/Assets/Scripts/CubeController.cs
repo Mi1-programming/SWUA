@@ -1,10 +1,9 @@
 using UnityEngine;
 
-public class CameraLook : MonoBehaviour
+public class CubeController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private string lookControl;
-
     private void Update()
     {
         if (Input.GetButton(lookControl))
@@ -12,7 +11,7 @@ public class CameraLook : MonoBehaviour
             float h = speed * Input.GetAxis("Mouse X");
             float v = speed * Input.GetAxis("Mouse Y");
 
-            transform.rotation *= Quaternion.Euler(0, h, -v);
-        }    
+            transform.Rotate(new Vector3(v, -h, 0), Space.World);
+        }
     }
 }

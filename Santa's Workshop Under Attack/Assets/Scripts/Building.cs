@@ -7,12 +7,8 @@ public class Building : MonoBehaviour
     [SerializeField] private LayerMask buildingLayer;
     [SerializeField] private UnityEvent<Vector3> onPlace;
     [SerializeField] private UnityEvent<Vector3> onBreak;
-    private Camera cam;
+    [SerializeField] private Camera cam;
 
-    private void Awake()
-    {
-        cam = Camera.main;
-    }
     private Vector3Int RoundVec(Vector3 target)
     {
         return new Vector3Int(Mathf.FloorToInt(target.x), Mathf.FloorToInt(target.y), Mathf.FloorToInt(target.z));
@@ -26,8 +22,8 @@ public class Building : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, 50.0f, buildingLayer))
             {
-                Vector3 dir = ray.direction / 2.0f;
-                Vector3 point = hit.point * gen.size + Vector3.one * gen.size / 2.0f;
+                Vector3 dir = Quaternion.Inverse(transform.rotation) * ray.direction / 2;
+                Vector3 point = Quaternion.Inverse(transform.rotation) * (hit.point - transform.position) * gen.size + Vector3.one * gen.size / 2.0f;
 
                 while (true)
                 {
