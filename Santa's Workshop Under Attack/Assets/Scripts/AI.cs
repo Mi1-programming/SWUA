@@ -32,12 +32,27 @@ public class AI : MonoBehaviour
     {
         if (target != null && !target.CompareTag("Destroyed"))
         {
+            if (agent.isStopped) agent.isStopped = false;
             agent.SetDestination(target.position);
 
+            
             float distance = Vector3.Distance(transform.position, new Vector3(target.position.x, transform.position.y, target.position.z));
+
+            // Use weapon if cooldown 0, distance is small enough, ...
             if (weaponCooldown <= 0f && distance <= touchDis + WeaponRange)
             {
-                UseWeapon();
+                // Shoot a raycast to see if AI can see the target
+                RaycastHit hit;
+                Vector3 dir = (target.position - transform.position).normalized;
+                if (Physics.Raycast(transform.position, dir, out hit, touchDis + WeaponRange))
+                {
+                    if (hit.transform == target)
+                    {
+                        UseWeapon();
+                    }
+                    //print($"{name} | hit = {hit.transform.name}   target = {target.name}");
+                    Debug.DrawRay(transform.position, dir * hit.distance, Color.red);
+                }
                 weaponCooldown = 1 / WeaponSpeed;
             }
         }
@@ -45,6 +60,7 @@ public class AI : MonoBehaviour
         {
             if (findCooldown <= 0f)
             {
+                if (!agent.isStopped) agent.isStopped = true;
                 target = GameController.FindClosest(transform.position, FindElf, FindEnemy, FindPart);
                 if (target)
                 {

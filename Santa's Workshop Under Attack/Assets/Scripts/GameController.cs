@@ -29,8 +29,9 @@ public class GameController : MonoBehaviour
             {
                 // SpawnPos somehow doesn't work... they spawn to the not instantiated object's position
                 GameObject obj = Instantiate(area.SpawnObject);
+                obj.SetActive(false);
                 obj.transform.position = new Vector3(Random.Range(area.Pos1.x, area.Pos2.x), area.Pos1.y, Random.Range(area.Pos1.z, area.Pos2.z));
-                
+                obj.SetActive(true);
                 if (area.isElf) Elfs.Add(obj);
                 else if (area.isEnemy) Enemies.Add(obj);
             }

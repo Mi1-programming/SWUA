@@ -1937,7 +1937,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1115075533}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -28, y: 3.26, z: -17.15}
+  m_LocalPosition: {x: -28, y: 3.26, z: 5.5}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1991,7 +1991,7 @@ MonoBehaviour:
   FindElf: 1
   FindEnemy: 0
   FindPart: 1
-  Damage: 10
+  Damage: 18
   WeaponSpeed: 1
   WeaponRange: 1
   target: {fileID: 0}
@@ -2746,13 +2746,13 @@ MonoBehaviour:
   - {fileID: 1651396695}
   SpawnAreas:
   - SpawnObject: {fileID: 1115075533}
-    SpawnAmount: 85
+    SpawnAmount: 120
     isElf: 0
     isEnemy: 1
     Pos1: {x: 60, y: 3.26, z: -40}
     Pos2: {x: 0, y: 3.26, z: -80}
   - SpawnObject: {fileID: 1777548230}
-    SpawnAmount: 60
+    SpawnAmount: 100
     isElf: 1
     isEnemy: 0
     Pos1: {x: 0, y: 3.26, z: -50}
@@ -3042,7 +3042,7 @@ MonoBehaviour:
   FindPart: 0
   Damage: 20
   WeaponSpeed: 1
-  WeaponRange: 1
+  WeaponRange: 10
   target: {fileID: 0}
 --- !u!1 &1806710105
 GameObject:
