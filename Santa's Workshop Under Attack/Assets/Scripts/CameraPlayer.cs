@@ -16,10 +16,8 @@ public class CameraPlayer : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        EnableControls();
+        SetCursorMoveState(false);
     }
-
-
     void Update()
     {
         if (controlsEnabled)
@@ -46,16 +44,10 @@ public class CameraPlayer : MonoBehaviour
         }
     }
 
-    void EnableControls()
+    public void SetCursorMoveState(bool state)
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        controlsEnabled = true;
-    }
-    void DisableControls()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        controlsEnabled = false;
+        Cursor.lockState = state ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.visible = state;
+        controlsEnabled = !state;
     }
 }
