@@ -5,32 +5,33 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Rendering;
 
-public class AI : MonoBehaviour
+public class AI : MonoBehaviour // REMEMBER TO IMPLEMENT!! -> WHEN AI IS USING A WEAPON, IT IS NOT ROTATING, AND IT LOOKS AWFUL SOMETIMES
 {
-    // Which to target?
+    [Header("Target types")] // Choose 1 or 2 target types (pro tip -> elf shouldn't target anvil haha)
     public bool FindElf;
     public bool FindEnemy;
-    public bool FindPart;
+    public bool FindAnvil;
 
-    // Weapon
-    public Weapon Weapon;
-    public float WeaponCondition = 1f;
-    public float WeaponSpeed = 1f;
-    public GameObject WeaponObj;
-    Animator WeaponAnimator;
+    [Header("Settings")]
+    public int Reward;
+
+    [Header("Weapon")]
+    public Weapon Weapon;                 // set when weapon setupped
+    public GameObject WeaponObj;          // set when weapon setupped
+    public float WeaponCondition = 1f;    // set when weapon setupped
+    public float WeaponSpeed = 1f;        // must be set at the beginning
+    public GameObject DefaultWeapon;      // must be set at the beginning
+
+    [Header("Debug")]
+    public Transform target;
+    NavMeshAgent agent;
 
     // Private
     float weaponCooldown = 0f;
     float findCooldown = 0f;
     float touchDis = 3f;
     bool move = true;
-
-    // Components and Objects
-    public GameObject DefaultWeapon;
-    public Transform target;
-    NavMeshAgent agent;
-    
-
+    Animator WeaponAnimator;
 
 
     public void SetupWeapon(Weapon _weapon, Mesh _mesh, float _weaponCondition)
@@ -40,14 +41,24 @@ public class AI : MonoBehaviour
         WeaponAnimator = null;
 
         // Set stuff
-        Weapon = _weapon;
+        if (_weapon) Weapon = _weapon;
         WeaponCondition = _weaponCondition;
 
         // Turn the mesh into a gameobject (not implemented)
         print("weapon added for " + name);
         WeaponObj = Instantiate(DefaultWeapon, transform);
-        if (_mesh != null) WeaponObj.GetComponent<MeshFilter>().mesh = _mesh;
-        WeaponObj.transform.localPosition = new Vector3(0.55f, 0f, 0f);
+        if (_mesh != null)
+        {
+            WeaponObj.GetComponent<MeshFilter>().mesh = _mesh;
+            WeaponObj.transform.localScale = Vector3.one;
+            WeaponObj.transform.localPosition = new Vector3((transform.localScale.x * 0.5f + _mesh.bounds.size.z * transform.localScale.x * 0.5f) * 0.5f, 0f, 0f);
+            print($"{name} | AI size add: {transform.localScale.x * 0.5f} / Mesh size add: {_mesh.bounds.size.z * transform.localScale.x * 0.5f}");
+        }
+        else
+        {
+            WeaponObj.transform.localPosition = new Vector3(0.55f, 0f, 0f);
+        }
+        
         WeaponAnimator = WeaponObj.GetComponent<Animator>();
     }
 
@@ -68,13 +79,14 @@ public class AI : MonoBehaviour
             float distance = Vector3.Distance(transform.position, new Vector3(target.position.x, transform.position.y, target.position.z));
 
             // Try to Use Weapon if close enough
-            if (distance <= touchDis + Weapon.Range)
+            if (WeaponObj && distance <= touchDis + Weapon.Range)
             {
                 if (weaponCooldown <= 0f)
                 {
-                    Vector3 dir = (target.position - transform.position).normalized;
-                    move = !Weapon.TryToUseWeapon(transform.position, dir, WeaponCondition, touchDis, target, WeaponObj);
-                    if (move == false && WeaponAnimator != null) WeaponAnimator.Play("weapon_use");
+                    Vector3 dir = (target.position - WeaponObj.transform.position).normalized;
+                    bool weaponUsed = Weapon.TryToUseWeapon(WeaponObj.transform.position, dir, WeaponCondition, touchDis, target, transform, WeaponObj);
+                    move = !weaponUsed;
+                    if (weaponUsed == true && WeaponAnimator != null) WeaponAnimator.Play("weapon_use");
 
                     weaponCooldown = 1 / WeaponSpeed;
                 }
@@ -96,7 +108,7 @@ public class AI : MonoBehaviour
             if (findCooldown <= 0f)
             {
                 if (!agent.isStopped) agent.isStopped = true;
-                target = GameController.FindClosest(transform.position, FindElf, FindEnemy, FindPart);
+                target = GameController.FindClosest(transform.position, FindElf, FindEnemy, FindAnvil);
                 if (target)
                 {
                     touchDis = GameController.GetTouchDistance(transform, target);
@@ -117,7 +129,15 @@ public class AI : MonoBehaviour
             if (gift != null)
             {
                 SetupWeapon(gift.weapon, gift.model, gift.condition);
+                Destroy(collision.transform.parent.gameObject);
             }
         }
+    }
+
+    private void OnDestroy()
+    {
+        GlobalStats.self.Tiles += Reward;
+
+        GameController.Remove(gameObject);
     }
 }

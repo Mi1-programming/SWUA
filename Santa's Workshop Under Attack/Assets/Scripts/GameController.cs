@@ -1,25 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEditor;
-
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Rendering;
 
-public class GameController : MonoBehaviour
+public class GameController : MonoBehaviour // T‰nne jonnekki tee se wave systeemi. voit k‰ytt‰‰ tai olla k‰ytt‰m‰tt‰ noita spawnAreaData hommia
 {
     public static GameController Instance;
 
     public List<GameObject> Elfs = new();
     public List<GameObject> Enemies = new();
-    public List<GameObject> CastleParts = new();
+    public GameObject Anvil;
 
     public List<SpawnAreaData> SpawnAreas = new();
+
+    [Header("Events")]
+    public UnityEvent OnGameover;
 
     void Awake()
     {
         Instance = this;
         SpawnObjects();
     }
+    
+    void GameOver()
+    {
+        print("game over");
+        OnGameover.Invoke();
+    }
+
+
 
     void SpawnObjects()
     {
@@ -38,8 +49,9 @@ public class GameController : MonoBehaviour
         }
     }
 
+
     #region Static Functions
-    public static Transform FindClosest(Vector3 pos, bool findElf, bool findEnemy, bool findPart)
+    public static Transform FindClosest(Vector3 pos, bool findElf, bool findEnemy, bool findAnvil)
     {
         GameObject closest = null;
         float closestDistance = -1;
@@ -48,6 +60,7 @@ public class GameController : MonoBehaviour
         {
             foreach (GameObject g in Instance.Elfs)
             {
+                if (g == null) continue;
                 float distance = Vector3.Distance(pos, g.transform.position);
                 if (distance < closestDistance || closestDistance == -1)
                 {
@@ -60,6 +73,7 @@ public class GameController : MonoBehaviour
         {
             foreach (GameObject g in Instance.Enemies)
             {
+                if (g == null) continue;
                 float distance = Vector3.Distance(pos, g.transform.position);
                 if (distance < closestDistance || closestDistance == -1)
                 {
@@ -68,16 +82,16 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-        if (findPart)
+        if (findAnvil)
         {
-            foreach (GameObject g in Instance.CastleParts)
+            if (Instance.Anvil)
             {
-                float distance = Vector3.Distance(pos, g.transform.position);
+                float distance = Vector3.Distance(pos, Instance.Anvil.transform.position);
                 if (distance < closestDistance || closestDistance == -1)
                 {
-                    if (!g.CompareTag("Destroyed"))
+                    if (!Instance.Anvil.CompareTag("Destroyed"))
                     {
-                        closest = g;
+                        closest = Instance.Anvil;
                         closestDistance = distance;
                     }
                 }
@@ -88,14 +102,14 @@ public class GameController : MonoBehaviour
         return null;
     }
     
-    public static void Remove(GameObject obj, bool isElf, bool isEnemy)
+    public static void Remove(GameObject obj)
     {
-        try
+        Instance.Elfs.Remove(obj);
+        Instance.Enemies.Remove(obj);
+        if (obj == Instance.Anvil)
         {
-            if (isElf) Instance.Elfs.Remove(obj);
-            else if (isEnemy) Instance.Enemies.Remove(obj);
+            Instance.GameOver();
         }
-        catch { }
     }
 
     // Between you and target. This determines how far you have to be that you can hit each other when touching

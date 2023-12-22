@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 
 public class Health : MonoBehaviour
 {
+    [Header("Settings")]
     public int HP = 100;
     public bool BreakWhenDead = false;
-    public bool isElf = false;
-    public bool isEnemy = false;
+
+    [Header("Events")]
+    public UnityEvent OnDamage;
+    public UnityEvent OnHeal;
+    public UnityEvent OnDeath;
 
     public void TakeHP(int amount)
     {
         HP -= amount;
+        OnDamage.Invoke();
+
         if (HP <= 0)
         {
             if (BreakWhenDead) BreakAction();
@@ -22,11 +29,12 @@ public class Health : MonoBehaviour
     public void GiveHP(int amount)
     {
         HP += amount;
+        OnHeal.Invoke();
     }
 
     void DeathAction()
     {
-        GameController.Remove(gameObject, isElf, isEnemy);
+        OnDeath.Invoke();
         Destroy(gameObject);
     }
 

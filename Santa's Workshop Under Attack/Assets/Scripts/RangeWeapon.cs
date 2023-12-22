@@ -9,7 +9,7 @@ public class RangeWeapon : Weapon
     public float BulletSpeed = 10f;
     public float BulletLife = 3f;
 
-    public override bool TryToUseWeapon(Vector3 pos, Vector3 dir, float condition, float touchDis, Transform target, GameObject weaponObj)
+    public override bool TryToUseWeapon(Vector3 pos, Vector3 dir, float condition, float touchDis, Transform target, Transform sender, GameObject weaponObj)
     {
         RaycastHit hit;
         if (Physics.Raycast(pos, dir, out hit, touchDis + Range))
@@ -21,9 +21,10 @@ public class RangeWeapon : Weapon
                 Animator anim = obj.GetComponent<Animator>();
                 if (anim != null) Destroy(anim);
 
-                obj.transform.position = pos;
+                obj.transform.position = pos + dir;
                 obj.transform.rotation = Quaternion.LookRotation(dir);
                 obj.transform.Rotate(90, 0, 0);
+                obj.transform.localScale = weaponObj.transform.lossyScale;
                 obj.GetComponent<Collider>().enabled = true;
                 Rigidbody rb = obj.GetComponent<Rigidbody>();
                 rb.isKinematic = false;
@@ -31,7 +32,7 @@ public class RangeWeapon : Weapon
 
                 // Add a bullet script to the obj
                 Bullet b = obj.AddComponent<Bullet>();
-                b.StartCoroutine(b.Life(BulletLife, Damage, HealInstead, target));
+                b.StartCoroutine(b.Life(BulletLife, Mathf.RoundToInt(Damage * condition), HealInstead, target, sender));
 
                 return true;
             }
