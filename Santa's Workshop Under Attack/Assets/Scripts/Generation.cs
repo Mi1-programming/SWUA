@@ -6,7 +6,6 @@ public class Generation : MonoBehaviour
 {
     public int size;
 
-    [HideInInspector] public Mesh model;
     [HideInInspector] public bool[][][] vox;
 
     private MeshFilter meshFilter;
@@ -50,7 +49,7 @@ public class Generation : MonoBehaviour
         },
     };
 
-    public void Clear()
+    public void Init()
     {
         vox = new bool[size][][];
         int x = 0;
@@ -68,7 +67,6 @@ public class Generation : MonoBehaviour
                 }
             }
         }
-        
     }
     private void Awake()
     {
@@ -76,11 +74,70 @@ public class Generation : MonoBehaviour
     }
     private void Start()
     {
-        Clear();
+        Init();
     }
     public Vector3Int ClampToBounds(Vector3Int value)
     {
         return new Vector3Int(Mathf.Clamp(value.x, 0, size - 1), Mathf.Clamp(value.y, 0, size - 1), Mathf.Clamp(value.z, 0, size - 1));
+    }
+    public Mesh Export(bool forProduction)
+    {
+        Mesh model = new Mesh();
+        List<Vector3> vertices = new List<Vector3>();
+        List<int> triangles = new List<int>();
+        List<Vector2> uvs = new List<Vector2>();
+
+        int x;
+        for (x = 0; x < size; x++)
+        {
+            int y;
+            for (y = 0; y < size; y++)
+            {
+                int z;
+                for (z = 0; z < size; z++)
+                {
+                    BuildFace(x, y, z, 5, 1, 0, 0, ref vertices, ref triangles, ref uvs);
+                    BuildFace(x, y, z, 4, -1, 0, 0, ref vertices, ref triangles, ref uvs);
+                    BuildFace(x, y, z, 3, 0, 1, 0, ref vertices, ref triangles, ref uvs);
+                    BuildFace(x, y, z, 2, 0, -1, 0, ref vertices, ref triangles, ref uvs);
+                    BuildFace(x, y, z, 1, 0, 0, 1, ref vertices, ref triangles, ref uvs);
+                    BuildFace(x, y, z, 0, 0, 0, -1, ref vertices, ref triangles, ref uvs);
+                }
+            }
+        }
+
+        if (forProduction)
+        {
+            Vector3 origin = Vector3.zero;
+            foreach (var vertice in vertices)
+            {
+                origin += vertice;
+            }
+            origin /= vertices.Count * size;
+            int i = 0;
+            for (i = 0; i < vertices.Count; i++)
+            {
+                vertices[i] /= size;
+                vertices[i] -= origin;
+            }
+        }
+        
+        model.vertices = vertices.ToArray();
+        model.triangles = triangles.ToArray();
+        model.uv = uvs.ToArray();
+
+        if (model.vertexCount > 0)
+        {
+            Mesh welded = SubdivisionSurface.Weld(model, float.Epsilon, model.bounds.size.x);
+            model = SubdivisionSurface.Subdivide(
+                welded,
+                1,
+                false
+            );
+        }
+
+        model.RecalculateNormals();
+        return model;
     }
     public bool IsOutOfBounds(int x, int y, int z)
     {
@@ -118,45 +175,12 @@ public class Generation : MonoBehaviour
     }
     public void Generate()
     {
-        model = new Mesh();
-        List<Vector3> vertices = new List<Vector3>();
-        List<int> triangles = new List<int>();
-        List<Vector2> uvs = new List<Vector2>();
-
-        int x;
-        for (x = 0; x < size; x++)
-        {
-            int y;
-            for (y = 0; y < size; y++)
-            {
-                int z;
-                for (z = 0; z < size; z++)
-                {
-                    BuildFace(x, y, z, 5, 1, 0, 0, ref vertices, ref triangles, ref uvs);
-                    BuildFace(x, y, z, 4, -1, 0, 0, ref vertices, ref triangles, ref uvs);
-                    BuildFace(x, y, z, 3, 0, 1, 0, ref vertices, ref triangles, ref uvs);
-                    BuildFace(x, y, z, 2, 0, -1, 0, ref vertices, ref triangles, ref uvs);
-                    BuildFace(x, y, z, 1, 0, 0, 1, ref vertices, ref triangles, ref uvs);
-                    BuildFace(x, y, z, 0, 0, 0, -1, ref vertices, ref triangles, ref uvs);
-                }
-            }
-        }
-
-        model.vertices = vertices.ToArray();
-        model.triangles = triangles.ToArray();
-        model.uv = uvs.ToArray();
-
-        if (model.vertexCount > 0)
-        {
-            Mesh welded = SubdivisionSurface.Weld(model, float.Epsilon, model.bounds.size.x);
-            model = SubdivisionSurface.Subdivide(
-                welded,
-                1,
-                false
-            );
-        }
-
-        model.RecalculateNormals();
+        Mesh model = Export(false);
         meshFilter.mesh = model;
+    }
+    public void Clear()
+    {
+        Init();
+        Generate();
     }
 }
