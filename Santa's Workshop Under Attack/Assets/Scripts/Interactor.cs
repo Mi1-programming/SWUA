@@ -42,8 +42,8 @@ public class Interactor : MonoBehaviour
         {
             if (!Input.GetButtonDown(interact)) return;
 
-            openTab.onClose.Invoke();
             onCloseAny.Invoke();
+            openTab.onClose.Invoke();
 
             openTab = null;
             return;
@@ -65,8 +65,8 @@ public class Interactor : MonoBehaviour
             LookingAt();
             if (!Input.GetButtonDown(interact)) return;
 
-            interactable.onOpen.Invoke();
             onOpenAny.Invoke();
+            interactable.onOpen.Invoke();
 
             openTab = interactable;
             found = true;

@@ -5,6 +5,8 @@ using System.Collections;
 public class TabToOpen : MonoBehaviour
 {
     [SerializeField] private UnityEvent<bool> onTabToggle;
+    [SerializeField] private UnityEvent onTabOpen;
+    [SerializeField] private UnityEvent onTabClose;
     [SerializeField] private UnityEvent<bool> onTabToggleInverse;
     [SerializeField] private UnityEvent<float> onToggleAnimate;
     [SerializeField] private float toggleTime = 0.25f;
@@ -17,7 +19,11 @@ public class TabToOpen : MonoBehaviour
     public void SetState(bool state)
     {
         active = state;
+
         onTabToggle.Invoke(active);
+        if (active) onTabOpen.Invoke();
+        else onTabClose.Invoke();
+
         onTabToggleInverse.Invoke(!active);
 
         if (lastAnim != null) StopCoroutine(lastAnim);

@@ -11,6 +11,11 @@ public class Building : MonoBehaviour
     [SerializeField] private string place;
     [SerializeField] private string remove;
 
+    public void Clear()
+    {
+        gen.Clear();
+        gen.Generate();
+    }
     private Vector3Int RoundVec(Vector3 target)
     {
         return new Vector3Int(Mathf.FloorToInt(target.x), Mathf.FloorToInt(target.y), Mathf.FloorToInt(target.z));
