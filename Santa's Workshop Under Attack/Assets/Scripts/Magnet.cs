@@ -37,7 +37,7 @@ public class Magnet : MonoBehaviour
             float dist = curve.Evaluate(1.0f - Mathf.Clamp01(Vector3.Distance(transform.position, db.rb.position) / range));
             Vector3 dir = Vector3.Normalize(transform.position - db.rb.position);
 
-            db.rb.velocity /= 1.0f + damping;
+            db.rb.velocity /= 1.0f + Mathf.Lerp(0, damping, dist);
             db.rb.AddForce(force * dir * dist);
         }
     }

@@ -1,16 +1,24 @@
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
+public class Template
+{
+    public string name;
+    public Vector3[] tiles;
+}
 public class Building : MonoBehaviour
 {
-    [SerializeField] private Generation gen;
+    public Generation gen;
+    public Template[] templates;
+
     [SerializeField] private LayerMask buildingLayer;
     [SerializeField] private UnityEvent<Vector3> onPlace;
     [SerializeField] private UnityEvent<Vector3> onBreak;
     [SerializeField] private Camera cam;
     [SerializeField] private string place;
     [SerializeField] private string remove;
-
+    
     public void Clear()
     {
         gen.Clear();
@@ -58,16 +66,25 @@ public class Building : MonoBehaviour
     }
     private void Place(Vector3Int rPos, RaycastHit hit)
     {
+        if (GlobalStats.self.Tiles <= 0) return;
+
         if (gen.IsOutOfBounds(rPos.x, rPos.y, rPos.z)) return;
-        gen.vox[rPos.x][rPos.y][rPos.z] = true;
+
+        ref bool tile = ref gen.vox[rPos.x][rPos.y][rPos.z];
+        if (tile) return;
+        tile = true;
+
         onPlace.Invoke(hit.point);
-        return;
+        GlobalStats.self.Tiles -= 1;
     }
     private void Remove(Vector3Int nextRPos, RaycastHit hit)
     {
         if (gen.IsOutOfBounds(nextRPos.x, nextRPos.y, nextRPos.z)) return;
-        gen.vox[nextRPos.x][nextRPos.y][nextRPos.z] = false;
+
+        ref bool tile = ref gen.vox[nextRPos.x][nextRPos.y][nextRPos.z];
+        tile = false;
         onBreak.Invoke(hit.point);
-        return;
+
+        GlobalStats.self.Tiles += 1;
     }
 }
