@@ -7,6 +7,8 @@ public class Gift : MonoBehaviour
     [Header("DEBUG")]
     public Texture preview;
     public Mesh model;
+    public float condition;
+    public Weapon weapon;
     
     private void Start()
     {
