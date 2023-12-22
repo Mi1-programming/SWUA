@@ -10,7 +10,7 @@ public class AI : MonoBehaviour
     public bool FindEnemy;
     public bool FindPart;
 
-    public int Damage = 20;
+    public Weapon Weapon;
     public float WeaponSpeed = 1f;
     public float WeaponRange = 1f;
 
@@ -18,8 +18,9 @@ public class AI : MonoBehaviour
     float findCooldown = 0f;
     float touchDis = 3f;
 
-    private NavMeshAgent agent;
+    
     [SerializeField] private Transform target;
+    NavMeshAgent agent;
     Health targetHealth;
 
 
@@ -48,7 +49,7 @@ public class AI : MonoBehaviour
                 {
                     if (hit.transform == target)
                     {
-                        UseWeapon();
+                        Weapon.UseWeapon(transform.position, target.position);
                     }
                     //print($"{name} | hit = {hit.transform.name}   target = {target.name}");
                     Debug.DrawRay(transform.position, dir * hit.distance, Color.red);
@@ -74,8 +75,8 @@ public class AI : MonoBehaviour
         if (weaponCooldown > 0f) weaponCooldown -= Time.deltaTime;
     }
 
-    void UseWeapon()
+    /*void UseWeapon()
     {
         targetHealth.TakeHP(Damage);
-    }
+    }*/
 }
