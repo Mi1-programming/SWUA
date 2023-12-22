@@ -6275,11 +6275,23 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 459613046}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1375338053}
+        m_TargetAssemblyTypeName: TemplateSystem, Assembly-CSharp
+        m_MethodName: NextTemplate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &459613046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18567,7 +18579,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 6
-  model: {fileID: 0}
 --- !u!33 &1261133236
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -18629,7 +18640,8 @@ Transform:
   m_LocalPosition: {x: -0.41666666, y: -0.41666666, z: -0.41666678}
   m_LocalScale: {x: 0.16666667, y: 0.1666667, z: 0.1666667}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1375338052}
   m_Father: {fileID: 1945772218}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -19119,6 +19131,68 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5319211355046922889, guid: d6c68f6e96c56d244abfe1bca85f2c44, type: 3}
   m_PrefabInstance: {fileID: 1336232186}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1375338051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1375338052}
+  - component: {fileID: 1375338053}
+  m_Layer: 6
+  m_Name: TemplateSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1375338052
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375338051}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1261133238}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1375338053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1375338051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a5caec2f2a148c4c9807a627a47a617, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  templates:
+  - name: sword
+    tiles:
+    - {x: 0, y: 0, z: 0}
+    - {x: 1, y: 0, z: 0}
+    - {x: 2, y: 0, z: 0}
+    - {x: 3, y: 0, z: 0}
+    - {x: 4, y: 0, z: 0}
+    - {x: 5, y: 0, z: 0}
+  - name: spear
+    tiles:
+    - {x: 0, y: 0, z: 0}
+    - {x: 0, y: 1, z: 0}
+    - {x: 0, y: 2, z: 0}
+    - {x: 0, y: 3, z: 0}
+    - {x: 0, y: 4, z: 0}
+    - {x: 0, y: 5, z: 0}
+  gen: {fileID: 1261133235}
 --- !u!1 &1385825529
 GameObject:
   m_ObjectHideFlags: 0
@@ -19642,8 +19716,8 @@ MonoBehaviour:
   onCreate:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1945772215}
-        m_TargetAssemblyTypeName: Building, Assembly-CSharp
+      - m_Target: {fileID: 1261133235}
+        m_TargetAssemblyTypeName: Generation, Assembly-CSharp
         m_MethodName: Clear
         m_Mode: 1
         m_Arguments:
@@ -25806,7 +25880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gen: {fileID: 1261133235}
-  templates: []
   buildingLayer:
     serializedVersion: 2
     m_Bits: 64

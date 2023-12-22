@@ -18,7 +18,7 @@ public class GiftMaker : MonoBehaviour
         newGift.GetComponentInChildren<Rigidbody>().velocity = spawnVelocity;
         Gift newGiftComp = newGift.GetComponent<Gift>();
         newGiftComp.preview = newPreview;
-        newGiftComp.model = buildInput.gen.model;
+        newGiftComp.model = buildInput.gen.Export(true);
 
         onCreate.Invoke(target.position);
     }
