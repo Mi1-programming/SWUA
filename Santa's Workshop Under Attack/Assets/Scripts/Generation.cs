@@ -48,33 +48,13 @@ public class Generation : MonoBehaviour
             new Vector3(1, 1, 0),
         },
     };
-
-    public void Init()
-    {
-        vox = new bool[size][][];
-        int x = 0;
-        for (x = 0; x < size; x++)
-        {
-            vox[x] = new bool[size][];
-            int y = 0;
-            for (y = 0; y < size; y++)
-            {
-                vox[x][y] = new bool[size];
-                int z = 0;
-                for (z = 0; z < size; z++)
-                {
-                    vox[x][y][z] = false;
-                }
-            }
-        }
-    }
     private void Awake()
     {
         meshFilter = GetComponent<MeshFilter>();
     }
     private void Start()
     {
-        Init();
+        vox = MuchClean.Create3DMatrix(size);
     }
     public Vector3Int ClampToBounds(Vector3Int value)
     {
@@ -180,7 +160,7 @@ public class Generation : MonoBehaviour
     }
     public void Clear()
     {
-        Init();
+        vox = MuchClean.Create3DMatrix(size);
         Generate();
     }
 }

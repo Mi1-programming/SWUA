@@ -12,11 +12,23 @@ public class Building : MonoBehaviour
     [SerializeField] private string place;
     [SerializeField] private string remove;
 
-    private bool canBuild = true;
-
+    public void CarefulClear()
+    {
+        int cleanedTiles = 0;
+        foreach (var x in gen.vox)
+        { foreach (var y in x)
+            { foreach (var z in y)
+                {
+                    cleanedTiles += z ? 1 : 0;
+                }
+            }
+        }
+        GlobalStats.self.Tiles += cleanedTiles;
+        gen.Clear();
+    }
     public void SetInputState(bool state)
     {
-        canBuild = state;
+        GlobalStats.self.canPlace = state;
     }
     private Vector3Int RoundVec(Vector3 target)
     {
@@ -47,7 +59,7 @@ public class Building : MonoBehaviour
     }
     private void Update()
     {
-        if (!canBuild) return;
+        if (!GlobalStats.self.canPlace) return;
         if (!Input.GetButtonDown(place) && !Input.GetButtonDown(remove)) return;
 
         RaycastHit hit;
