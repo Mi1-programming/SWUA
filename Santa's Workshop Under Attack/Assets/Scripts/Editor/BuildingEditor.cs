@@ -12,6 +12,10 @@ public class BuildingEditor : Editor
         coord.vector3Value = newCoord;
         coord.serializedObject.ApplyModifiedProperties();
     }
+    private void CopyTemplate()
+    {
+        SerializedProperty gen = serializedObject.FindProperty("gen");
+    }
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
