@@ -6206,6 +6206,7 @@ GameObject:
   - component: {fileID: 459613047}
   - component: {fileID: 459613046}
   - component: {fileID: 459613045}
+  - component: {fileID: 459613048}
   m_Layer: 0
   m_Name: Next Template
   m_TagString: Untagged
@@ -6280,16 +6281,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1375338053}
-        m_TargetAssemblyTypeName: TemplateSystem, Assembly-CSharp
-        m_MethodName: NextTemplate
-        m_Mode: 1
+      - m_Target: {fileID: 1710661649}
+        m_TargetAssemblyTypeName: GlobalStats, Assembly-CSharp
+        m_MethodName: Buy
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Next Template
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &459613046
@@ -6330,6 +6331,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459613043}
   m_CullTransparentMesh: 1
+--- !u!114 &459613048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459613043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 032814f6c69ac87409ebc6e29a1b8ab3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 459613045}
+  upgrade: Next Template
 --- !u!1 &464245391
 GameObject:
   m_ObjectHideFlags: 0
@@ -18169,6 +18184,18 @@ MonoBehaviour:
           m_StringArgument: open
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1710661649}
+        m_TargetAssemblyTypeName: GlobalStats, Assembly-CSharp
+        m_MethodName: RefreshPrice
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Next Template
+          m_BoolArgument: 0
+        m_CallState: 2
   onTabClose:
     m_PersistentCalls:
       m_Calls:
@@ -19193,6 +19220,65 @@ MonoBehaviour:
     - {x: 0, y: 4, z: 0}
     - {x: 0, y: 5, z: 0}
   gen: {fileID: 1261133235}
+  modelerTarget: {fileID: 1261133237}
+  templateMaterial: {fileID: 2100000, guid: 54bfe643391500a47b0fd0a12bcfc468, type: 2}
+  onDisplay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1945772215}
+        m_TargetAssemblyTypeName: Building, Assembly-CSharp
+        m_MethodName: CarefulClear
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1945772215}
+        m_TargetAssemblyTypeName: Building, Assembly-CSharp
+        m_MethodName: SetInputState
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHide:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1945772215}
+        m_TargetAssemblyTypeName: Building, Assembly-CSharp
+        m_MethodName: SetInputState
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 1261133235}
+        m_TargetAssemblyTypeName: Generation, Assembly-CSharp
+        m_MethodName: Clear
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  currentTemplate:
+    name: 
+    tiles: []
 --- !u!1 &1385825529
 GameObject:
   m_ObjectHideFlags: 0
@@ -19538,6 +19624,7 @@ GameObject:
   - component: {fileID: 1526146383}
   - component: {fileID: 1526146382}
   - component: {fileID: 1526146385}
+  - component: {fileID: 1526146386}
   m_Layer: 0
   m_Name: Send To Gift
   m_TagString: Untagged
@@ -19710,6 +19797,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildInput: {fileID: 1945772215}
+  templateSystem: {fileID: 1375338053}
   cam: {fileID: 1981160539}
   previewResolution: {x: 256, y: 256}
   gift: {fileID: 2386896142653544456, guid: e27117084c6c49e47851b1a40f66f811, type: 3}
@@ -19730,6 +19818,19 @@ MonoBehaviour:
         m_CallState: 2
   target: {fileID: 818918231}
   spawnVelocity: {x: 0, y: 2, z: 0}
+--- !u!114 &1526146386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526146380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d41b05d63ffe6f54bb7e6e7c4c34e2fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1526146382}
 --- !u!1 &1550413599
 GameObject:
   m_ObjectHideFlags: 0
@@ -20194,6 +20295,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c88839a669144004bb031bc3067946fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buyables:
+  - name: Next Template
+    startingPrice: 4
+    increaseBy: 0.25
+    timesBuy: 0
+    onBuy:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1375338053}
+          m_TargetAssemblyTypeName: TemplateSystem, Assembly-CSharp
+          m_MethodName: ShowTemplate
+          m_Mode: 4
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 1
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    onDisplay:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 107910870}
+          m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+          m_MethodName: set_text
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   onTiles:
     m_PersistentCalls:
       m_Calls:
@@ -20210,6 +20346,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   tiles: 100
+  canPlace: 1
 --- !u!1 &1722518943
 GameObject:
   m_ObjectHideFlags: 0
