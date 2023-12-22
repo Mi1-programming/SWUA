@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,22 +25,29 @@ public class AI : MonoBehaviour
     float touchDis = 3f;
     bool move = true;
 
-    // Target and Agent
-    [SerializeField] private Transform target;
+    // Components and Objects
+    public GameObject DefaultWeapon;
+    public Transform target;
     NavMeshAgent agent;
+    
 
 
 
     public void SetupWeapon(Weapon _weapon, Mesh _mesh, float _weaponCondition)
     {
+        // Clear old weapon
+        Destroy(WeaponObj);
+        WeaponAnimator = null;
+
         // Set stuff
         Weapon = _weapon;
         WeaponCondition = _weaponCondition;
 
         // Turn the mesh into a gameobject (not implemented)
-        // hi guys! :)
-
-        // Get the Weapon's animator
+        print("weapon added for " + name);
+        WeaponObj = Instantiate(DefaultWeapon, transform);
+        if (_mesh != null) WeaponObj.GetComponent<MeshFilter>().mesh = _mesh;
+        WeaponObj.transform.localPosition = new Vector3(0.55f, 0f, 0f);
         WeaponAnimator = WeaponObj.GetComponent<Animator>();
     }
 
@@ -48,7 +56,8 @@ public class AI : MonoBehaviour
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        if (WeaponObj) SetupWeapon(Weapon, null, 1f); // Mainly for test use !!!
+
+        SetupWeapon(Weapon, null, 1f);
     }
 
     void Update()
@@ -97,5 +106,18 @@ public class AI : MonoBehaviour
             else findCooldown -= Time.deltaTime;
         }
         if (weaponCooldown > 0f) weaponCooldown -= Time.deltaTime;
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.parent != null)
+        {
+            Gift gift = collision.transform.parent.GetComponent<Gift>();
+            if (gift != null)
+            {
+                SetupWeapon(gift.weapon, gift.model, gift.condition);
+            }
+        }
     }
 }
