@@ -4,24 +4,24 @@ using System.Collections;
 
 public class TabToOpen : MonoBehaviour
 {
-    [SerializeField] private string openKey;
     [SerializeField] private UnityEvent<bool> onTabToggle;
+    [SerializeField] private UnityEvent<bool> onTabToggleInverse;
     [SerializeField] private UnityEvent<float> onToggleAnimate;
     [SerializeField] private float toggleTime = 0.25f;
     [SerializeField] private AnimationCurve curve;
+
     private float toggleProgress = 0.0f;
     private bool active = false;
     private Coroutine lastAnim;
 
-    private void Update()
+    public void SetState(bool state)
     {
-        if (Input.GetButtonDown(openKey)) {
-            active = !active;
-            onTabToggle.Invoke(active);
+        active = state;
+        onTabToggle.Invoke(active);
+        onTabToggleInverse.Invoke(!active);
 
-            if (lastAnim != null) StopCoroutine(lastAnim);
-            lastAnim = StartCoroutine(Animate());
-        }        
+        if (lastAnim != null) StopCoroutine(lastAnim);
+        lastAnim = StartCoroutine(Animate());
     }
     private IEnumerator Animate()
     {

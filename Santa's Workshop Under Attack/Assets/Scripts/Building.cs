@@ -8,6 +8,8 @@ public class Building : MonoBehaviour
     [SerializeField] private UnityEvent<Vector3> onPlace;
     [SerializeField] private UnityEvent<Vector3> onBreak;
     [SerializeField] private Camera cam;
+    [SerializeField] private string place;
+    [SerializeField] private string remove;
 
     private Vector3Int RoundVec(Vector3 target)
     {
@@ -15,7 +17,7 @@ public class Building : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+        if (Input.GetButtonDown(place) || Input.GetButtonDown(remove))
         {
             RaycastHit hit;
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -33,11 +35,11 @@ public class Building : MonoBehaviour
 
                     if (gen.IsOutOfBounds(nextRPos.x, nextRPos.y, nextRPos.z) || gen.vox[nextRPos.x][nextRPos.y][nextRPos.z])
                     {
-                        if (Input.GetMouseButtonDown(0))
+                        if (Input.GetButtonDown(place))
                         {
                             Place(rPos, hit);
                         }
-                        else
+                        else if (Input.GetButtonDown(remove))
                         {
                             Remove(nextRPos, hit);
                         }
