@@ -5,8 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New MeleeWeapon", menuName = "Weapon/MeleeWeapon")]
 public class MeleeWeapon : Weapon
 {
-    public override void UseWeapon(Vector3 pos, Vector3 targetPos)
+    public override bool TryToUseWeapon(Vector3 pos, Vector3 dir, float condition, float touchDis, Transform target, GameObject weaponObj)
     {
-        
+        RaycastHit hit;
+        if (Physics.Raycast(pos, dir, out hit, touchDis + Range))
+        {
+            if (hit.transform == target)
+            {
+                ActionToTarget(target);
+                return true;
+            }
+        }
+        return false;
     }
 }

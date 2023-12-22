@@ -6,57 +6,82 @@ using UnityEngine.Rendering;
 
 public class AI : MonoBehaviour
 {
+    // Which to target?
     public bool FindElf;
     public bool FindEnemy;
     public bool FindPart;
 
+    // Weapon
     public Weapon Weapon;
+    public float WeaponCondition = 1f;
     public float WeaponSpeed = 1f;
-    public float WeaponRange = 1f;
+    public GameObject WeaponObj;
+    Animator WeaponAnimator;
 
+    // Private
     float weaponCooldown = 0f;
     float findCooldown = 0f;
     float touchDis = 3f;
+    bool move = true;
 
-    
+    // Target and Agent
     [SerializeField] private Transform target;
     NavMeshAgent agent;
-    Health targetHealth;
+
+
+
+    public void SetupWeapon(Weapon _weapon, Mesh _mesh, float _weaponCondition)
+    {
+        // Set stuff
+        Weapon = _weapon;
+        WeaponCondition = _weaponCondition;
+
+        // Turn the mesh into a gameobject (not implemented)
+        // hi guys! :)
+
+        // Get the Weapon's animator
+        WeaponAnimator = WeaponObj.GetComponent<Animator>();
+    }
+
 
 
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        if (WeaponObj) SetupWeapon(Weapon, null, 1f); // Mainly for test use !!!
     }
 
     void Update()
     {
+        // Do this if target is valid
         if (target != null && !target.CompareTag("Destroyed"))
         {
-            if (agent.isStopped) agent.isStopped = false;
-            agent.SetDestination(target.position);
-
-            
             float distance = Vector3.Distance(transform.position, new Vector3(target.position.x, transform.position.y, target.position.z));
 
-            // Use weapon if cooldown 0, distance is small enough, ...
-            if (weaponCooldown <= 0f && distance <= touchDis + WeaponRange)
+            // Try to Use Weapon if close enough
+            if (distance <= touchDis + Weapon.Range)
             {
-                // Shoot a raycast to see if AI can see the target
-                RaycastHit hit;
-                Vector3 dir = (target.position - transform.position).normalized;
-                if (Physics.Raycast(transform.position, dir, out hit, touchDis + WeaponRange))
+                if (weaponCooldown <= 0f)
                 {
-                    if (hit.transform == target)
-                    {
-                        Weapon.UseWeapon(transform.position, target.position);
-                    }
-                    //print($"{name} | hit = {hit.transform.name}   target = {target.name}");
-                    Debug.DrawRay(transform.position, dir * hit.distance, Color.red);
+                    Vector3 dir = (target.position - transform.position).normalized;
+                    move = !Weapon.TryToUseWeapon(transform.position, dir, WeaponCondition, touchDis, target, WeaponObj);
+                    if (move == false && WeaponAnimator != null) WeaponAnimator.Play("weapon_use");
+
+                    weaponCooldown = 1 / WeaponSpeed;
                 }
-                weaponCooldown = 1 / WeaponSpeed;
             }
+            else move = true;
+
+            // Move if it's enabled. it is only false when AI can use weapon (close enough and raycast hits target)
+            if (move)
+            {
+                if (agent.isStopped) agent.isStopped = false;
+                agent.SetDestination(target.position);
+            }
+            else if (!agent.isStopped) agent.isStopped = true;
         }
+
+        // Do this if target isn't valid. The code below tries to find a new target every 1 second
         else
         {
             if (findCooldown <= 0f)
@@ -65,7 +90,6 @@ public class AI : MonoBehaviour
                 target = GameController.FindClosest(transform.position, FindElf, FindEnemy, FindPart);
                 if (target)
                 {
-                    targetHealth = target.GetComponent<Health>();
                     touchDis = GameController.GetTouchDistance(transform, target);
                 }
                 else findCooldown = 1f;
@@ -74,9 +98,4 @@ public class AI : MonoBehaviour
         }
         if (weaponCooldown > 0f) weaponCooldown -= Time.deltaTime;
     }
-
-    /*void UseWeapon()
-    {
-        targetHealth.TakeHP(Damage);
-    }*/
 }

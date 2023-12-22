@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4db720f5625489d42bcf72b8ada993a4, type: 3}
-  m_Name: Sword
+  m_Script: {fileID: 11500000, guid: 5622856b840998247837a71dda27a506, type: 3}
+  m_Name: Spear
   m_EditorClassIdentifier: 
-  testvalue: 0
-  meleevalue: 0
+  Damage: 20
+  HealInstead: 0
+  Range: 20
+  BulletSpeed: 10
+  BulletLife: 3
