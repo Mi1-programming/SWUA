@@ -4,8 +4,9 @@ public class Gift : MonoBehaviour
 {
     [SerializeField] private MeshRenderer previewRenderer;
 
-    [HideInInspector] public Texture preview;
-    [HideInInspector] public Vector3Int[] model;
+    [Header("DEBUG")]
+    public Texture preview;
+    public Mesh model;
     
     private void Start()
     {

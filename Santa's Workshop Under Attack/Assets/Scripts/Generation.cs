@@ -5,6 +5,8 @@ using Subdiv;
 public class Generation : MonoBehaviour
 {
     public int size;
+
+    [HideInInspector] public Mesh model;
     [HideInInspector] public bool[][][] vox;
 
     private MeshFilter meshFilter;
@@ -116,7 +118,7 @@ public class Generation : MonoBehaviour
     }
     public void Generate()
     {
-        Mesh mesh = new Mesh();
+        model = new Mesh();
         List<Vector3> vertices = new List<Vector3>();
         List<int> triangles = new List<int>();
         List<Vector2> uvs = new List<Vector2>();
@@ -140,21 +142,21 @@ public class Generation : MonoBehaviour
             }
         }
 
-        mesh.vertices = vertices.ToArray();
-        mesh.triangles = triangles.ToArray();
-        mesh.uv = uvs.ToArray();
+        model.vertices = vertices.ToArray();
+        model.triangles = triangles.ToArray();
+        model.uv = uvs.ToArray();
 
-        if (mesh.vertexCount > 0)
+        if (model.vertexCount > 0)
         {
-            Mesh welded = SubdivisionSurface.Weld(mesh, float.Epsilon, mesh.bounds.size.x);
-            mesh = SubdivisionSurface.Subdivide(
+            Mesh welded = SubdivisionSurface.Weld(model, float.Epsilon, model.bounds.size.x);
+            model = SubdivisionSurface.Subdivide(
                 welded,
                 1,
                 false
             );
         }
 
-        mesh.RecalculateNormals();
-        meshFilter.mesh = mesh;
+        model.RecalculateNormals();
+        meshFilter.mesh = model;
     }
 }
