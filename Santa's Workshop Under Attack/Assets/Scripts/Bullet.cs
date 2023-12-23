@@ -9,8 +9,6 @@ public class Bullet : MonoBehaviour
     int damage;
     bool healInstead;
 
-    bool allowColDetect = false;
-
     public IEnumerator Life(float time, int _damage, bool _healInstead, Transform _target, Transform _sender)
     {
         damage = _damage;
@@ -18,8 +16,6 @@ public class Bullet : MonoBehaviour
         target = _target;
         sender = _sender;
 
-        yield return new WaitForEndOfFrame();
-        allowColDetect = true;
         yield return new WaitForSeconds(time);
 
         Destroy(gameObject);
@@ -28,8 +24,6 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!allowColDetect) return;
-
         if (collision.transform == target)
         {
             Health h = target.GetComponent<Health>();

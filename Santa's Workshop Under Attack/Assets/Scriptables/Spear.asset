@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5622856b840998247837a71dda27a506, type: 3}
   m_Name: Spear
   m_EditorClassIdentifier: 
-  Damage: 20
+  Damage: 35
   HealInstead: 0
   Range: 20
   BulletSpeed: 10
