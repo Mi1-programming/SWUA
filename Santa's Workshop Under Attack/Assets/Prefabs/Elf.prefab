@@ -105,7 +105,7 @@ MonoBehaviour:
   FindAnvil: 0
   Reward: 0
   KeepCloseToSpawn: 1
-  Weapon: {fileID: 11400000, guid: 7ba28e40ca54a2b42867ab35cf320c76, type: 2}
+  Weapon: {fileID: 11400000, guid: 2e43884e05ff90848998abbb657286f1, type: 2}
   WeaponObj: {fileID: 0}
   WeaponCondition: 1
   WeaponSpeed: 1
