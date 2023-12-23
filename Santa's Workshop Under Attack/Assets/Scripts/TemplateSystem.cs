@@ -7,6 +7,7 @@ public class Template
 {
     public string name;
     public Vector3Int[] tiles;
+    public Weapon weaponType;
 }
 public class TemplateSystem : MonoBehaviour
 {
@@ -16,11 +17,19 @@ public class TemplateSystem : MonoBehaviour
     [SerializeField] private Material templateMaterial;
     [SerializeField] private UnityEvent onDisplay;
     [SerializeField] private UnityEvent onHide;
-    [HideInInspector] public Template currentTemplate;
+    public static Template currentTemplate;
 
     private Material originMaterial;
     private Coroutine showTemplateCoroutine;
 
+    public void ClearTemplate()
+    {
+        currentTemplate = null;
+    }
+    private void Awake()
+    {
+        ClearTemplate();
+    }
     public bool[][][] TemplateToBuild(Template temp)
     {
         bool[][][] newBuild = MuchClean.Create3DMatrix(gen.size);
