@@ -19404,6 +19404,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   size: 6
+  debug: 0
+  generatedDebug: []
 --- !u!33 &1261133236
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -21187,9 +21189,11 @@ MonoBehaviour:
   - {fileID: 0}
   Enemies:
   - {fileID: 0}
-  CastleParts:
-  - {fileID: 0}
+  Anvil: {fileID: 0}
   SpawnAreas: []
+  OnGameover:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1710661648
 Transform:
   m_ObjectHideFlags: 0

@@ -48,6 +48,10 @@ public class Generation : MonoBehaviour
             new Vector3(1, 1, 0),
         },
     };
+
+    [SerializeField] private bool debug;
+    [SerializeField] private Vector3Int[] generatedDebug;
+
     private void Awake()
     {
         meshFilter = GetComponent<MeshFilter>();
@@ -62,6 +66,11 @@ public class Generation : MonoBehaviour
     }
     public Mesh Export(bool forProduction)
     {
+        if (debug)
+        {
+            generatedDebug = MuchClean.BuildToCoord(vox, size);
+        }
+
         Mesh model = new Mesh();
         List<Vector3> vertices = new List<Vector3>();
         List<int> triangles = new List<int>();

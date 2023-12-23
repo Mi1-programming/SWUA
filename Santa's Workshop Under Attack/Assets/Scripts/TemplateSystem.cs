@@ -30,18 +30,13 @@ public class TemplateSystem : MonoBehaviour
     {
         ClearTemplate();
     }
-    public bool[][][] TemplateToBuild(Template temp)
+    public bool[][][] TemplateToBuild(Template temp, int size)
     {
-        bool[][][] newBuild = MuchClean.Create3DMatrix(gen.size);
-        foreach (var coord in temp.tiles)
-        {
-            newBuild[coord.x][coord.y][coord.z] = true;
-        }
-        return newBuild;
+        return MuchClean.CoordToBuild(temp.tiles, size);
     }
     public float CalculateCondition(Template compare)
     {
-        bool[][][] tempBuild = TemplateToBuild(compare);
+        bool[][][] tempBuild = TemplateToBuild(compare, gen.size);
         float right = 0;
 
         int x = 0;
@@ -89,7 +84,7 @@ public class TemplateSystem : MonoBehaviour
     }
     public void LoadTemplate(Template temp)
     {
-        gen.vox = TemplateToBuild(temp);
+        gen.vox = TemplateToBuild(temp, gen.size);
         gen.Generate();
     }
 }
