@@ -12,8 +12,11 @@ public class RangeWeapon : Weapon
     public override bool TryToUseWeapon(Vector3 pos, Vector3 dir, float condition, float touchDis, Transform target, Transform sender, GameObject weaponObj)
     {
         RaycastHit hit;
+        Collider senderCollider = sender.GetComponent<Collider>();
+        senderCollider.enabled = false;
         if (Physics.Raycast(pos, dir, out hit, touchDis + Range))
         {
+            senderCollider.enabled = true;
             if (hit.transform == target)
             {
                 // Instantiate the weaponObj as a bullet and give it velocity and rotation
@@ -37,6 +40,7 @@ public class RangeWeapon : Weapon
                 return true;
             }
         }
+        senderCollider.enabled = true;
         return false;
     }
 }

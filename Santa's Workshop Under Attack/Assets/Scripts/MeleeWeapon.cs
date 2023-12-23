@@ -14,7 +14,7 @@ public class MeleeWeapon : Weapon
         {
             senderCollider.enabled = true;
 
-            Debug.DrawRay(pos, dir, Color.red, hit.distance);
+            //Debug.DrawRay(pos, dir, Color.red, hit.distance);
             if (hit.transform == target)
             {
                 ActionToTarget(target, condition);
