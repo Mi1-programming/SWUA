@@ -104,10 +104,11 @@ MonoBehaviour:
   FindEnemy: 1
   FindAnvil: 0
   Reward: 0
-  Weapon: {fileID: 11400000, guid: 7ba28e40ca54a2b42867ab35cf320c76, type: 2}
+  KeepCloseToSpawn: 1
+  Weapon: {fileID: 11400000, guid: 2e43884e05ff90848998abbb657286f1, type: 2}
+  WeaponObj: {fileID: 0}
   WeaponCondition: 1
   WeaponSpeed: 1
-  WeaponObj: {fileID: 0}
   DefaultWeapon: {fileID: 4083078772638625131, guid: 20ccda30ab055af4d904100cac69e16b, type: 3}
   target: {fileID: 0}
 --- !u!114 &8067974161142214187
@@ -131,6 +132,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHpChange:
     m_PersistentCalls:
       m_Calls: []
 --- !u!195 &8067974161142214186

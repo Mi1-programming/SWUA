@@ -13,26 +13,91 @@ public class GameController : MonoBehaviour // Tänne jonnekki tee se wave systee
     public List<GameObject> Enemies = new();
     public GameObject Anvil;
 
-    public List<SpawnAreaData> SpawnAreas = new();
+
+    [Header("Wave System")]
+    public GameObject ElfPrefab;
+    public GameObject EnemyPrefab;
+    public Transform ElfSpawnPoint;
+    public List<Transform> EnemySpawnPoints = new();
+    public int StartElfs = 10;
+    public int WaveElfs = 2;
+    public int WaveEnemies = 5;
+    public float WaveDifficultyIncrease = 0.2f;
+    public float WaveRandomness = 0.4f;
+
+    [Header("Debug")]
+    public int Wave = 0;
 
     [Header("Events")]
-    public UnityEvent OnGameover;
+    public UnityEvent<string> OnNewWave;
+    public UnityEvent<string> OnGameover;
+    public UnityEvent OnVictory;
 
     void Awake()
     {
         Instance = this;
-        SpawnObjects();
+        SpawnStartElfs();
+        SpawnWave();
     }
     
-    void GameOver()
+    public void Victory()
+    {
+        print("victory");
+        OnVictory.Invoke();
+    }
+
+    public void GameOver()
     {
         print("game over");
-        OnGameover.Invoke();
+        OnGameover.Invoke($"You lost on day {Wave}");
     }
 
 
+    private void Update()
+    {
+        if (Enemies.Count == 0)
+        {
+            SpawnWave();
+        }
+    }
 
-    void SpawnObjects()
+
+    void SpawnStartElfs()
+    {
+        // Spawn Elfs
+        for (int i = 0; i < StartElfs; i++)
+        {
+            GameObject obj = Instantiate(ElfPrefab, ElfSpawnPoint.position, Quaternion.identity);
+            Elfs.Add(obj);
+        }
+    }
+
+    void SpawnWave()
+    {
+        if (Wave >= 24) { Victory(); return; }
+
+        Wave++;
+        OnNewWave.Invoke($"Day {Wave}");
+
+        // Spawn Elfs
+        for (int i = 0; i < WaveElfs; i++)
+        {
+            GameObject obj = Instantiate(ElfPrefab, ElfSpawnPoint.position, Quaternion.identity);
+            Elfs.Add(obj);
+        }
+
+        // Spawn Enemies
+        Vector3 spawnPos = EnemySpawnPoints[Random.Range(0, EnemySpawnPoints.Count)].position;
+        int enemySpawnAmount = Mathf.RoundToInt((WaveEnemies + WaveEnemies * WaveDifficultyIncrease * Wave) * Random.Range(1 - WaveRandomness, 1 + WaveRandomness));
+        for (int i = 0; i < enemySpawnAmount; i++)
+        {
+            GameObject obj = Instantiate(EnemyPrefab, spawnPos, Quaternion.identity);
+            Enemies.Add(obj);
+        }
+    }
+
+
+    /*void SpawnObjects()
     {
         foreach (SpawnAreaData area in SpawnAreas)
         {
@@ -47,7 +112,7 @@ public class GameController : MonoBehaviour // Tänne jonnekki tee se wave systee
                 else if (area.isEnemy) Enemies.Add(obj);
             }
         }
-    }
+    }*/
 
 
     #region Static Functions
@@ -106,10 +171,10 @@ public class GameController : MonoBehaviour // Tänne jonnekki tee se wave systee
     {
         Instance.Elfs.Remove(obj);
         Instance.Enemies.Remove(obj);
-        if (obj == Instance.Anvil)
+        /*if (obj == Instance.Anvil)
         {
             Instance.GameOver();
-        }
+        }*/
     }
 
     // Between you and target. This determines how far you have to be that you can hit each other when touching

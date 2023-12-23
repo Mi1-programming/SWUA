@@ -14,6 +14,7 @@ public class AI : MonoBehaviour // REMEMBER TO IMPLEMENT!! -> WHEN AI IS USING A
 
     [Header("Settings")]
     public int Reward;
+    public bool KeepCloseToSpawn;
 
     [Header("Weapon")]
     public Weapon Weapon;                 // set when weapon setupped
@@ -28,9 +29,10 @@ public class AI : MonoBehaviour // REMEMBER TO IMPLEMENT!! -> WHEN AI IS USING A
 
     // Private
     float weaponCooldown = 0f;
-    float findCooldown = 0f;
     float touchDis = 3f;
     bool move = true;
+    bool returningToSpawn = false;
+    Vector3 spawnPos;
     Animator WeaponAnimator;
 
 
@@ -45,14 +47,15 @@ public class AI : MonoBehaviour // REMEMBER TO IMPLEMENT!! -> WHEN AI IS USING A
         WeaponCondition = _weaponCondition;
 
         // Turn the mesh into a gameobject (not implemented)
-        print("weapon added for " + name);
+        //print("weapon added for " + name);
         WeaponObj = Instantiate(DefaultWeapon, transform);
         if (_mesh != null)
         {
             WeaponObj.GetComponent<MeshFilter>().mesh = _mesh;
             WeaponObj.transform.localScale = Vector3.one;
             WeaponObj.transform.localPosition = new Vector3((transform.localScale.x * 0.5f + _mesh.bounds.size.z * transform.localScale.x * 0.5f) * 0.5f, 0f, 0f);
-            print($"{name} | AI size add: {transform.localScale.x * 0.5f} / Mesh size add: {_mesh.bounds.size.z * transform.localScale.x * 0.5f}");
+            //print($"{name} | AI size add: {transform.localScale.x * 0.5f} / Mesh size add: {_mesh.bounds.size.z * transform.localScale.x * 0.5f}");
+            WeaponObj.GetComponent<MeshCollider>().sharedMesh = _mesh;
         }
         else
         {
@@ -67,14 +70,26 @@ public class AI : MonoBehaviour // REMEMBER TO IMPLEMENT!! -> WHEN AI IS USING A
     private void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
+        spawnPos = transform.position;
         SetupWeapon(Weapon, null, 1f);
     }
 
     void Update()
     {
+        if (weaponCooldown > 0f) weaponCooldown -= Time.deltaTime;
+
+        // Find target, if target null -> return
+        target = GameController.FindClosest(transform.position, FindElf, FindEnemy, FindAnvil);
+        if (!target)
+        {
+            agent.isStopped = true;
+            return;
+        } 
+        touchDis = GameController.GetTouchDistance(transform, target);
+
+
         // Do this if target is valid
-        if (target != null && !target.CompareTag("Destroyed"))
+        if (target != null)
         {
             float distance = Vector3.Distance(transform.position, new Vector3(target.position.x, transform.position.y, target.position.z));
 
@@ -85,6 +100,7 @@ public class AI : MonoBehaviour // REMEMBER TO IMPLEMENT!! -> WHEN AI IS USING A
                 {
                     Vector3 dir = (target.position - WeaponObj.transform.position).normalized;
                     bool weaponUsed = Weapon.TryToUseWeapon(WeaponObj.transform.position, dir, WeaponCondition, touchDis, target, transform, WeaponObj);
+                    if (name == "Elf") print(weaponUsed);
                     move = !weaponUsed;
                     if (weaponUsed == true && WeaponAnimator != null) WeaponAnimator.Play("weapon_use");
 
@@ -97,27 +113,26 @@ public class AI : MonoBehaviour // REMEMBER TO IMPLEMENT!! -> WHEN AI IS USING A
             if (move)
             {
                 if (agent.isStopped) agent.isStopped = false;
-                agent.SetDestination(target.position);
+
+                if (KeepCloseToSpawn && Vector3.Distance(transform.position, spawnPos) > 15 && Vector3.Distance(transform.position, target.position) > 15 && returningToSpawn == false)
+                {
+                    returningToSpawn = true;
+                    
+                }
+                
+                // Actual move
+                if (!returningToSpawn)
+                {
+                    agent.SetDestination(target.position);
+                }
+                else
+                {
+                    if (Vector3.Distance(transform.position, spawnPos) < 10) returningToSpawn = false;
+                    agent.SetDestination(spawnPos);
+                }
             }
             else if (!agent.isStopped) agent.isStopped = true;
         }
-
-        // Do this if target isn't valid. The code below tries to find a new target every 1 second
-        else
-        {
-            if (findCooldown <= 0f)
-            {
-                if (!agent.isStopped) agent.isStopped = true;
-                target = GameController.FindClosest(transform.position, FindElf, FindEnemy, FindAnvil);
-                if (target)
-                {
-                    touchDis = GameController.GetTouchDistance(transform, target);
-                }
-                else findCooldown = 1f;
-            }
-            else findCooldown -= Time.deltaTime;
-        }
-        if (weaponCooldown > 0f) weaponCooldown -= Time.deltaTime;
     }
 
 
