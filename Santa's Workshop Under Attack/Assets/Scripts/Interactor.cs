@@ -18,7 +18,7 @@ public class Interactor : MonoBehaviour
     [SerializeField] private UnityEvent onLookingAway;
     [SerializeField] private UnityEvent onOpenAny;
     [SerializeField] private UnityEvent onCloseAny;
-    private Interactable openTab;
+    public static Interactable openTab;
     private bool wasLookingAt;
 
     private void LookingAt()
@@ -35,6 +35,10 @@ public class Interactor : MonoBehaviour
             onLookingAway.Invoke();
             wasLookingAt = false;
         }
+    }
+    private void Awake()
+    {
+        openTab = null;
     }
     private void Update()
     {

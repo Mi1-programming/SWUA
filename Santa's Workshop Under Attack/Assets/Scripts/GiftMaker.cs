@@ -21,7 +21,8 @@ public class GiftMaker : MonoBehaviour
 
         newGiftComp.preview = newPreview;
         newGiftComp.model = buildInput.gen.Export(true);
-        newGiftComp.condition = templateSystem.CalculateCondition(templateSystem.currentTemplate);
+        newGiftComp.condition = templateSystem.CalculateCondition(TemplateSystem.currentTemplate);
+        newGiftComp.weapon = TemplateSystem.currentTemplate.weaponType;
 
         onCreate.Invoke(target.position);
     }
